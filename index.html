@@ -17,9 +17,15 @@
 
     <div class="max-w-xl mx-auto bg-white rounded-3xl shadow-xl p-6 sm:p-8 border border-slate-200">
         
-        <!-- HEADER FORMULIR RESMI -->
-        <div class="text-center mb-6 border-b pb-4 border-slate-100">
-            <!-- Anda bisa mengganti teks di bawah dengan nama kantor Anda -->
+        <!-- HEADER FORMULIR DENGAN LOGO PERUSAHAAN -->
+        <div class="text-center mb-6 border-b pb-4 border-slate-100 flex flex-col items-center">
+            <!-- 
+              TEMPAT LOGO PERUSAHAAN 
+              Ganti 'logo_kiri.png' di bawah ini dengan nama file gambar logo Anda yang diupload ke GitHub.
+              Ukuran otomatis dibatasi h-16 (tinggi sekitar 64 pixel) agar tetap rapi di HP dan PC.
+            -->
+            <img src="logo_kiri.png" alt="Logo Perusahaan" class="h-16 w-auto object-contain mb-3 onerror="this.style.display='none'">
+            
             <h2 class="text-2xl font-black text-slate-900 tracking-tight uppercase">Formulir Kerja Harian</h2>
             <p class="text-slate-500 text-sm font-medium mt-1">Khusus Karyawan WFH / Laporan Jarak Jauh</p>
         </div>
@@ -69,7 +75,7 @@
             </div>
         </form>
 
-        <!-- FOOTER JAMINAN KEAMANAN (Menghilangkan ketakutan phising) -->
+        <!-- FOOTER JAMINAN KEAMANAN -->
         <div class="mt-8 pt-6 border-t border-slate-100 text-center space-y-2">
             <p class="text-xs text-slate-400 font-medium">🛡️ Hak Cipta Sistem Internal Kantor. Seluruh data dilindungi secara internal.</p>
             <div id="statusBox" class="p-3 rounded-xl bg-slate-100 text-center inline-block min-w-[200px]">
