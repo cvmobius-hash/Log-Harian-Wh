@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Laporan Kerja Internal</title>
-    <!-- Tailwind CSS untuk Desain Profesional -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body class="bg-slate-50 font-sans antialiased min-h-screen p-3 sm:p-6 text-xl selection:bg-blue-200">
     
@@ -30,17 +29,15 @@
 
     <div class="max-w-xl mx-auto bg-white rounded-3xl shadow-xl p-6 sm:p-8 border border-slate-200">
         
-        <!-- HEADER FORMULIR -->
         <div class="text-center mb-6 border-b pb-4 border-slate-100 flex flex-col items-center">
-            <img src="logo_kiri.png" alt="Logo Perusahaan" class="h-16 w-auto object-contain mb-3" onerror="this.style.display='none'">
+            <img src="logo._kiripng" alt="Logo Perusahaan" class="h-16 w-auto object-contain mb-3" onerror="this.style.display='none'">
             <h2 class="text-2xl font-black text-slate-900 tracking-tight uppercase">Formulir Kerja Harian</h2>
-            <p class="text-slate-500 text-sm font-medium mt-1">Laporan Jam Kerja & Efisiensi Lembur Karyawan</p>
+            <p class="text-slate-500 text-sm font-medium mt-1">Laporan Jam Kerja & Efisiensi Lembur Berbasis Shift</p>
         </div>
 
-        <!-- FORM UTAMA -->
         <form id="gaptekForm" class="space-y-6">
             
-            <!-- BAGIAN 1: PENGATURAN NAMA -->
+            <!-- SEKSI IDENTITAS KARYAWAN -->
             <div id="sectionProfil" class="bg-slate-50 p-5 rounded-2xl border-2 border-dashed border-slate-300 space-y-4">
                 <p class="font-bold text-slate-700 text-sm text-center uppercase tracking-wider">📋 Pendaftaran Nama Karyawan</p>
                 <div>
@@ -56,7 +53,6 @@
                 </button>
             </div>
 
-            <!-- TAMPILAN NAMA JIKA SUDAH DIVERIFIKASI -->
             <div id="profilTerkunci" class="hidden bg-emerald-50 p-4 rounded-2xl border border-emerald-200 flex justify-between items-center">
                 <div>
                     <p class="text-xs text-emerald-700 font-bold uppercase tracking-wider">🟢 Akun Karyawan Aktif:</p>
@@ -67,34 +63,45 @@
                 </button>
             </div>
 
-            <!-- BAGIAN NEW: WAKTU MULAI & BERES KERJA -->
+            <!-- INPUT SHIFT KERJA -->
+            <div class="space-y-1">
+                <label class="block font-bold text-slate-900 text-base">Pilih Shift Kerja Hari Ini :</label>
+                <select id="shiftKerja" required class="w-full px-4 py-3 border-2 border-slate-300 rounded-xl focus:outline-none focus:border-blue-600 bg-white text-base">
+                    <option value="" disabled selected>-- Pilih Shift Anda --</option>
+                    <option value="Shift 1">Shift 1 (07:00 - 15:00)</option>
+                    <option value="Shift 2A">Shift 2A (15:00 - 23:00)</option>
+                    <option value="Non-Shift">Non-Shift (08:00 - 17:00)</option>
+                    <option value="Non-Shift CS">Non-Shift CS (09:00 - 18:00)</option>
+                </select>
+            </div>
+
+            <!-- INPUT JAM AKTUAL -->
             <div class="grid grid-cols-2 gap-4 bg-amber-50/60 p-4 rounded-2xl border border-amber-200">
                 <div>
-                    <label class="block font-bold text-slate-900 text-sm mb-1">⏱️ JAM MULAI :</label>
+                    <label class="block font-bold text-slate-900 text-sm mb-1">⏱️ JAM MULAI ASLI :</label>
                     <input type="time" id="jamMulai" required class="w-full px-3 py-2 border-2 border-slate-300 rounded-xl focus:outline-none focus:border-amber-500 text-base bg-white">
                 </div>
                 <div>
-                    <label class="block font-bold text-slate-900 text-sm mb-1">🏁 JAM SELESAI :</label>
+                    <label class="block font-bold text-slate-900 text-sm mb-1">🏁 JAM SELESAI ASLI :</label>
                     <input type="time" id="jamSelesai" required class="w-full px-3 py-2 border-2 border-slate-300 rounded-xl focus:outline-none focus:border-amber-500 text-base bg-white">
                 </div>
             </div>
 
-            <!-- BAGIAN 2: LAPORAN KERJA -->
+            <!-- DETAIL PEKERJAAN -->
             <div class="space-y-2">
                 <label class="block font-black text-slate-900 text-lg">Tuliskan Laporan Tugas Hari Ini :</label>
                 <textarea id="jobDetail" rows="4" required class="w-full px-4 py-3 border-2 border-slate-300 rounded-xl focus:outline-none focus:border-emerald-600 text-base bg-slate-50 focus:bg-white transition" placeholder="Tulis tugas Anda di sini dengan jelas..."></textarea>
             </div>
 
-            <!-- TOMBOL KIRIM UTAMA -->
+            <!-- TOMBOL SUBMIT -->
             <div>
                 <button type="submit" id="submitBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 rounded-2xl text-xl shadow-lg transition active:scale-98 flex flex-col items-center justify-center">
                     <span>📤 KIRIM LAPORAN KE KANTOR</span>
-                    <span class="text-xs font-normal text-emerald-100 mt-0.5">Tekan 1x, data akan langsung masuk ke sistem pusat</span>
+                    <span class="text-xs font-normal text-emerald-100 mt-0.5">Tekan 1x, data akan otomatis dicocokkan dengan jadwal shift</span>
                 </button>
             </div>
         </form>
 
-        <!-- FOOTER JAMINAN KEAMANAN -->
         <div class="mt-8 pt-6 border-t border-slate-100 text-center space-y-2">
             <p class="text-xs text-slate-400 font-medium">🛡️ Hak Cipta Sistem Internal Kantor. Seluruh data dilindungi secara internal.</p>
             <div id="statusBox" class="p-3 rounded-xl bg-slate-100 text-center inline-block min-w-[200px]">
@@ -104,9 +111,8 @@
 
     </div>
 
-    <!-- LOGIKA SISTEM -->
     <script>
-        // MASUKKAN URL GOOGLE APPS SCRIPT ANDA DI SINI
+        // MASUKKAN URL GOOGLE APPS SCRIPT BARU HASIL DEPLOY ULANG DI SINI
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwXqyDRdvfovbbwOzD68FAriOQ715_U5TwyAkY1H3Z5NJYru27L1sz5G7j7mqaIAial/exec";
 
         const sectionProfil = document.getElementById('sectionProfil');
@@ -119,7 +125,6 @@
         function cekProfil() {
             const savedName = localStorage.getItem('gaptek_nama');
             const savedDiv = localStorage.getItem('gaptek_divisi');
-
             if (savedName && savedDiv) {
                 sectionProfil.classList.add('hidden');
                 profilTerkunci.classList.remove('hidden');
@@ -134,12 +139,7 @@
         function simpanProfil() {
             const name = document.getElementById('employeeName').value.trim();
             const div = document.getElementById('division').value.trim();
-
-            if (!name || !div) {
-                alert("Harap isi Nama Lengkap dan Bagian Kerja Anda.");
-                return;
-            }
-
+            if (!name || !div) { alert("Harap isi Nama Lengkap dan Bagian Kerja Anda."); return; }
             localStorage.setItem('gaptek_nama', name);
             localStorage.setItem('gaptek_divisi', div);
             cekProfil();
@@ -163,27 +163,27 @@
 
         document.getElementById('gaptekForm').addEventListener('submit', function(e) {
             e.preventDefault();
-
             const name = localStorage.getItem('gaptek_nama');
             const division = localStorage.getItem('gaptek_divisi');
 
-            if (!name || !division) {
-                alert("Identitas belum diverifikasi. Silakan isi form di atas dahulu.");
-                return;
-            }
-
-            const jamMulai = document.getElementById('jamMulai').value;
-            const jamSelesai = document.getElementById('jamSelesai').value;
-            const detail = document.getElementById('jobDetail').value;
+            if (!name || !division) { alert("Identitas belum diverifikasi."); return; }
 
             submitBtn.disabled = true;
             submitBtn.className = "w-full bg-slate-300 text-slate-500 font-bold py-4 rounded-2xl text-lg flex flex-col items-center justify-center cursor-not-allowed";
-            submitBtn.innerHTML = "<span>⏳ PROSES PENGIRIMAN AMAN...</span>";
+            submitBtn.innerHTML = "<span>⏳ SEDANG MENGENTRI DATA...</span>";
 
             const today = new Date();
             const date = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
 
-            const dataKirim = { date, name, division, jamMulai, jamSelesai, detail };
+            const dataKirim = {
+                date,
+                name,
+                division,
+                shift: document.getElementById('shiftKerja').value,
+                jamMulai: document.getElementById('jamMulai').value,
+                jamSelesai: document.getElementById('jamSelesai').value,
+                detail: document.getElementById('jobDetail').value
+            };
 
             fetch(WEB_APP_URL, {
                 method: 'POST',
@@ -197,21 +197,22 @@
                 document.getElementById('jobDetail').value = '';
                 document.getElementById('jamMulai').value = '';
                 document.getElementById('jamSelesai').value = '';
-                alert("Sukses! Laporan Anda telah berhasil masuk ke database kantor.");
+                document.getElementById('shiftKerja').value = '';
+                alert("Sukses! Laporan lemburan & jam kerja masuk ke sistem.");
                 muatStatusTerakhir();
             })
             .catch(error => {
                 console.error(error);
-                alert("Koneksi terganggu. Silakan cek sinyal internet Anda dan coba lagi.");
+                alert("Gagal mengirim. Coba periksa kembali jaringan internet Anda.");
             })
             .finally(() => {
                 submitBtn.disabled = false;
                 submitBtn.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 rounded-2xl text-xl shadow-lg transition active:scale-98 flex flex-col items-center justify-center";
-                submitBtn.innerHTML = "<span>📤 KIRIM LAPORAN KE KANTOR</span><span class='text-xs font-normal text-emerald-100 mt-0.5'>Tekan 1x, data akan langsung masuk ke sistem pusat</span>";
+                submitBtn.innerHTML = "<span>📤 KIRIM LAPORAN KE KANTOR</span>";
             });
         });
 
         cekProfil();
     </script>
 </body>
-</html>>
+</html>
