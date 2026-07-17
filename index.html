@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Laporan Kerja Internal</title>
-     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Tailwind CSS modern & interaktif -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body class="bg-slate-50 font-sans antialiased min-h-screen p-3 sm:p-6 text-xl selection:bg-blue-200">
     
@@ -27,47 +28,41 @@
 
     </div>
 
-    <div class="max-w-xl mx-auto bg-white rounded-3xl shadow-xl p-6 sm:p-8 border border-slate-200">
-        
-        <div class="text-center mb-6 border-b pb-4 border-slate-100 flex flex-col items-center">
-            <img src="logo._kiripng" alt="Logo Perusahaan" class="h-16 w-auto object-contain mb-3" onerror="this.style.display='none'">
-            <h2 class="text-2xl font-black text-slate-900 tracking-tight uppercase">Formulir Kerja Harian</h2>
-            <p class="text-slate-500 text-sm font-medium mt-1">Laporan Jam Kerja & Efisiensi Lembur Berbasis Shift</p>
-        </div>
-
+        <!-- AREA UTAMA FORMULIR -->
         <form id="gaptekForm" class="space-y-6">
             
-            <!-- SEKSI IDENTITAS KARYAWAN -->
+            <!-- REGISTER IDENTITAS KARYAWAN -->
             <div id="sectionProfil" class="bg-slate-50 p-5 rounded-2xl border-2 border-dashed border-slate-300 space-y-4">
-                <p class="font-bold text-slate-700 text-sm text-center uppercase tracking-wider">📋 Pendaftaran Nama Karyawan</p>
+                <p class="font-bold text-slate-700 text-sm text-center uppercase tracking-wider">📋 Daftarkan Nama Anda Dahulu</p>
                 <div>
-                    <label class="block font-bold text-slate-800 mb-1 text-base">Nama Lengkap Sesuai KTP :</label>
-                    <input type="text" id="employeeName" class="w-full px-4 py-3 border-2 border-slate-300 rounded-xl focus:outline-none focus:border-blue-600 bg-white text-base" placeholder="Ketik Nama Lengkap Anda...">
+                    <label class="block font-bold text-slate-800 mb-1 text-base">Nama Lengkap Anda :</label>
+                    <input type="text" id="employeeName" class="w-full px-4 py-3.5 border-2 border-slate-300 rounded-xl focus:outline-none focus:border-blue-600 bg-white text-base font-bold" placeholder="Ketik nama lengkap Anda...">
                 </div>
                 <div>
-                    <label class="block font-bold text-slate-800 mb-1 text-base">Bagian / Divisi Kerja :</label>
-                    <input type="text" id="division" class="w-full px-4 py-3 border-2 border-slate-300 rounded-xl focus:outline-none focus:border-blue-600 bg-white text-base" placeholder="Contoh: Administrasi, Gudang, Operasional...">
+                    <label class="block font-bold text-slate-800 mb-1 text-base">Bagian / Divisi :</label>
+                    <input type="text" id="division" class="w-full px-4 py-3.5 border-2 border-slate-300 rounded-xl focus:outline-none focus:border-blue-600 bg-white text-base font-bold" placeholder="Contoh: Gudang, Admin, CS...">
                 </div>
-                <button type="button" onclick="simpanProfil()" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-black py-3.5 rounded-xl shadow-md text-base transition">
+                <button type="button" onclick="simpanProfil()" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-black py-4 rounded-xl shadow-md text-base transition">
                     Verifikasi & Simpan Identitas
                 </button>
             </div>
 
+            <!-- JIKA IDENTITAS SUDAH TERSIMPAN -->
             <div id="profilTerkunci" class="hidden bg-emerald-50 p-4 rounded-2xl border border-emerald-200 flex justify-between items-center">
                 <div>
-                    <p class="text-xs text-emerald-700 font-bold uppercase tracking-wider">🟢 Akun Karyawan Aktif:</p>
-                    <p id="txtNamaDivisi" class="font-black text-slate-800 text-base mt-0.5"></p>
+                    <p class="text-xs text-emerald-700 font-bold uppercase tracking-wider">🟢 Akun Anda yang Aktif:</p>
+                    <p id="txtNamaDivisi" class="font-black text-slate-800 text-lg mt-0.5"></p>
                 </div>
                 <button type="button" onclick="ubahProfil()" class="text-xs text-slate-500 font-bold underline p-2 hover:text-red-600">
-                    Ubah Data
+                    Ganti Nama
                 </button>
             </div>
 
-            <!-- INPUT SHIFT KERJA -->
+            <!-- PILIHAN SHIFT KERJA -->
             <div class="space-y-1">
                 <label class="block font-bold text-slate-900 text-base">Pilih Shift Kerja Hari Ini :</label>
-                <select id="shiftKerja" required class="w-full px-4 py-3 border-2 border-slate-300 rounded-xl focus:outline-none focus:border-blue-600 bg-white text-base">
-                    <option value="" disabled selected>-- Pilih Shift Anda --</option>
+                <select id="shiftKerja" required class="w-full px-4 py-3.5 border-2 border-slate-300 rounded-xl focus:outline-none focus:border-blue-600 bg-white text-base font-bold">
+                    <option value="" disabled selected>-- Klik di sini untuk pilih Shift --</option>
                     <option value="Shift 1">Shift 1 (07:00 - 15:00)</option>
                     <option value="Shift 2A">Shift 2A (15:00 - 23:00)</option>
                     <option value="Non-Shift">Non-Shift (08:00 - 17:00)</option>
@@ -75,45 +70,60 @@
                 </select>
             </div>
 
-            <!-- INPUT JAM AKTUAL -->
+            <!-- INPUT JAM DIGITAL BESAR -->
             <div class="grid grid-cols-2 gap-4 bg-amber-50/60 p-4 rounded-2xl border border-amber-200">
                 <div>
-                    <label class="block font-bold text-slate-900 text-sm mb-1">⏱️ JAM MULAI ASLI :</label>
-                    <input type="time" id="jamMulai" required class="w-full px-3 py-2 border-2 border-slate-300 rounded-xl focus:outline-none focus:border-amber-500 text-base bg-white">
+                    <label class="block font-bold text-slate-900 text-xs mb-1">⏱️ JAM MULAI KERJA :</label>
+                    <input type="time" id="jamMulai" required class="w-full px-3 py-3 border-2 border-slate-300 rounded-xl focus:outline-none focus:border-amber-500 text-base font-bold bg-white text-center">
                 </div>
                 <div>
-                    <label class="block font-bold text-slate-900 text-sm mb-1">🏁 JAM SELESAI ASLI :</label>
-                    <input type="time" id="jamSelesai" required class="w-full px-3 py-2 border-2 border-slate-300 rounded-xl focus:outline-none focus:border-amber-500 text-base bg-white">
+                    <label class="block font-bold text-slate-900 text-xs mb-1">🏁 JAM SELESAI KERJA :</label>
+                    <input type="time" id="jamSelesai" required class="w-full px-3 py-3 border-2 border-slate-300 rounded-xl focus:outline-none focus:border-amber-500 text-base font-bold bg-white text-center">
                 </div>
             </div>
 
             <!-- DETAIL PEKERJAAN -->
             <div class="space-y-2">
-                <label class="block font-black text-slate-900 text-lg">Tuliskan Laporan Tugas Hari Ini :</label>
-                <textarea id="jobDetail" rows="4" required class="w-full px-4 py-3 border-2 border-slate-300 rounded-xl focus:outline-none focus:border-emerald-600 text-base bg-slate-50 focus:bg-white transition" placeholder="Tulis tugas Anda di sini dengan jelas..."></textarea>
+                <label class="block font-black text-slate-900 text-lg">Tulis Tugas yang Selesai Hari Ini :</label>
+                <textarea id="jobDetail" rows="4" required class="w-full px-4 py-3.5 border-2 border-slate-300 rounded-xl focus:outline-none focus:border-emerald-600 text-base bg-slate-50 focus:bg-white font-medium transition" placeholder="Tulis apa saja pekerjaan Anda hari ini..."></textarea>
             </div>
 
-            <!-- TOMBOL SUBMIT -->
+            <!-- TOMBOL KIRIM UTAMA -->
             <div>
-                <button type="submit" id="submitBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 rounded-2xl text-xl shadow-lg transition active:scale-98 flex flex-col items-center justify-center">
-                    <span>📤 KIRIM LAPORAN KE KANTOR</span>
-                    <span class="text-xs font-normal text-emerald-100 mt-0.5">Tekan 1x, data akan otomatis dicocokkan dengan jadwal shift</span>
+                <button type="submit" id="submitBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4.5 rounded-2xl text-xl shadow-lg transition active:scale-98 flex flex-col items-center justify-center">
+                    <span>📤 KIRIM LAPORAN KERJA</span>
+                    <span class="text-xs font-normal text-emerald-100 mt-0.5">Tekan 1x saja, sistem akan memproses otomatis</span>
                 </button>
             </div>
         </form>
 
+        <!-- PANEL INSTAN BUKTI GAMBAR (MUNCUL SETELAH KIRIM LAPORAN) -->
+        <div id="panelEvidence" class="hidden mt-6 bg-blue-50 p-6 rounded-3xl border-2 border-blue-400 text-center space-y-4 animate-bounce">
+            <p class="text-base font-black text-blue-900">⚠️ SATU LANGKAH LAGI!</p>
+            <p class="text-sm text-slate-600">Laporan teks Anda sudah tersimpan. Sekarang, silakan ambil foto bukti fisik pekerjaan Anda:</p>
+            <a id="btnBukaKamera" href="#" target="_blank" class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-2xl text-lg shadow-md transition">
+                📸 KLIK SINI UNTUK AMBIL FOTO BUKTI
+            </a>
+        </div>
+
+        <!-- FOOTER JAMINAN KEAMANAN -->
         <div class="mt-8 pt-6 border-t border-slate-100 text-center space-y-2">
-            <p class="text-xs text-slate-400 font-medium">🛡️ Hak Cipta Sistem Internal Kantor. Seluruh data dilindungi secara internal.</p>
+            <p class="text-xs text-slate-400 font-medium">🛡️ Hak Cipta Aplikasi Laporan Internal Kantor.</p>
             <div id="statusBox" class="p-3 rounded-xl bg-slate-100 text-center inline-block min-w-[200px]">
-                <p id="statusText" class="font-bold text-slate-500 text-xs">Belum ada laporan dikirim hari ini.</p>
+                <p id="statusText" class="font-bold text-slate-500 text-xs">Belum mengirim laporan harian.</p>
             </div>
         </div>
 
     </div>
 
+    <!-- LOGIKA UTAMA COMBINE SYSTEM -->
     <script>
-        // MASUKKAN URL GOOGLE APPS SCRIPT BARU HASIL DEPLOY ULANG DI SINI
+        // 1. MASUKKAN URL GOOGLE APPS SCRIPT ANDA DI SINI (DARI GOOGLE SHEETS)
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwXqyDRdvfovbbwOzD68FAriOQ715_U5TwyAkY1H3Z5NJYru27L1sz5G7j7mqaIAial/exec";
+
+        // 2. MASUKKAN LINK APPSHEET FORMULIR BROWSER LINK ANDA DI SINI
+        // Contoh format: https://www.appsheet.com/start/xxx-xxx-xxx&view=Laporan_Harian_Form
+        const APPSHEET_FORM_URL = "https://www.appsheet.com/start/af05701f-3978-4c0c-a049-892bf3f9425a&view=Database_Laporan_Kerja_Form";
 
         const sectionProfil = document.getElementById('sectionProfil');
         const profilTerkunci = document.getElementById('profilTerkunci');
@@ -121,6 +131,8 @@
         const submitBtn = document.getElementById('submitBtn');
         const statusBox = document.getElementById('statusBox');
         const statusText = document.getElementById('statusText');
+        const panelEvidence = document.getElementById('panelEvidence');
+        const btnBukaKamera = document.getElementById('btnBukaKamera');
 
         function cekProfil() {
             const savedName = localStorage.getItem('gaptek_nama');
@@ -128,7 +140,7 @@
             if (savedName && savedDiv) {
                 sectionProfil.classList.add('hidden');
                 profilTerkunci.classList.remove('hidden');
-                txtNamaDivisi.innerText = `${savedName} - Bagian ${savedDiv}`;
+                txtNamaDivisi.innerText = `${savedName} (${savedDiv})`;
             } else {
                 sectionProfil.classList.remove('hidden');
                 profilTerkunci.classList.add('hidden');
@@ -139,14 +151,14 @@
         function simpanProfil() {
             const name = document.getElementById('employeeName').value.trim();
             const div = document.getElementById('division').value.trim();
-            if (!name || !div) { alert("Harap isi Nama Lengkap dan Bagian Kerja Anda."); return; }
+            if (!name || !div) { alert("Tolong tulis Nama dan Bagian Kerja Anda."); return; }
             localStorage.setItem('gaptek_nama', name);
             localStorage.setItem('gaptek_divisi', div);
             cekProfil();
         }
 
         function ubahProfil() {
-            if (confirm("Apakah Anda ingin mengubah data identitas karyawan?")) {
+            if (confirm("Ingin mengganti data nama Anda?")) {
                 localStorage.removeItem('gaptek_nama');
                 localStorage.removeItem('gaptek_divisi');
                 cekProfil();
@@ -157,7 +169,7 @@
             const terakhirKirim = localStorage.getItem('gaptek_terakhir_kirim');
             if (terakhirKirim) {
                 statusBox.className = "p-3 rounded-xl bg-emerald-50 border border-emerald-300 text-center inline-block min-w-[200px]";
-                statusText.innerHTML = `🟢 <span class="text-emerald-800 font-bold">LAPORAN DITERIMA PUSAT</span><br><span class="text-[10px] text-slate-400">Jam kirim: ${terakhirKirim}</span>`;
+                statusText.innerHTML = `🟢 <span class="text-emerald-800 font-bold">LAPORAN DIKIRIM</span><br><span class="text-[10px] text-slate-400">Jam: ${terakhirKirim}</span>`;
             }
         }
 
@@ -166,11 +178,11 @@
             const name = localStorage.getItem('gaptek_nama');
             const division = localStorage.getItem('gaptek_divisi');
 
-            if (!name || !division) { alert("Identitas belum diverifikasi."); return; }
+            if (!name || !division) { alert("Harap isi nama Anda di bagian paling atas dahulu."); return; }
 
             submitBtn.disabled = true;
             submitBtn.className = "w-full bg-slate-300 text-slate-500 font-bold py-4 rounded-2xl text-lg flex flex-col items-center justify-center cursor-not-allowed";
-            submitBtn.innerHTML = "<span>⏳ SEDANG MENGENTRI DATA...</span>";
+            submitBtn.innerHTML = "<span>⏳ SEDANG MENGIRIM DATA...</span>";
 
             const today = new Date();
             const date = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
@@ -193,22 +205,31 @@
                 body: JSON.stringify(dataKirim)
             })
             .then(() => {
-                localStorage.setItem('gaptek_terakhir_kirim', new Date().toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'}));
+                const jamSekarang = new Date().toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'});
+                localStorage.setItem('gaptek_terakhir_kirim', jamSekarang);
+                
+                // BERSIHKAN FORM
                 document.getElementById('jobDetail').value = '';
                 document.getElementById('jamMulai').value = '';
                 document.getElementById('jamSelesai').value = '';
                 document.getElementById('shiftKerja').value = '';
-                alert("Sukses! Laporan lemburan & jam kerja masuk ke sistem.");
+                
+                alert("Laporan tertulis Berhasil Dikirim! Sekarang silakan klik tombol biru di bawah untuk ambil foto.");
+                
+                // AKTIFKAN PANEL FOTO APPSHEET
+                btnBukaKamera.href = APPSHEET_FORM_URL;
+                panelEvidence.classList.remove('hidden');
+                
                 muatStatusTerakhir();
             })
             .catch(error => {
                 console.error(error);
-                alert("Gagal mengirim. Coba periksa kembali jaringan internet Anda.");
+                alert("Gagal kirim. Pastikan HP terkoneksi internet.");
             })
             .finally(() => {
                 submitBtn.disabled = false;
-                submitBtn.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 rounded-2xl text-xl shadow-lg transition active:scale-98 flex flex-col items-center justify-center";
-                submitBtn.innerHTML = "<span>📤 KIRIM LAPORAN KE KANTOR</span>";
+                submitBtn.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4.5 rounded-2xl text-xl shadow-lg transition active:scale-98 flex flex-col items-center justify-center";
+                submitBtn.innerHTML = "<span>📤 KIRIM LAPORAN KERJA</span>";
             });
         });
 
