@@ -223,23 +223,19 @@
                 
                 alert("Laporan tertulis Berhasil Dikirim! Sekarang silakan klik tombol biru di bawah untuk ambil foto.");
                 
-                // ====== TRIK PINTAR: PASANG AUTO-FILL UNTUK APPSHEET ======
-                // Kita kirim data yang tadi diinput ke dalam link AppSheet agar terisi otomatis
+               // ====== LINK KHUSUS FORM BUKTI FOTO APPSHEET ======
+                // Kita arahkan langsung ke View Form Bukti Foto yang bersih (hanya Nama & Kamera)
                 const baseUrl = "https://www.appsheet.com/start/af05701f-3978-4c0c-a049-892bf3f9425a";
-                const viewName = "Database Laporan Kerja_Form";
-                
-                // Susun default values dalam format JSON
+                const viewName = "Bukti_Foto_Form"; // Nama View Form khusus yang Anda buat di AppSheet
+
+                // Kirim data nama karyawan agar otomatis terpilih di form AppSheet
                 const defaults = {
-                    "Nama Karyawan": name,
-                    "Divisi": division,
-                    "Shift": inputShift,
-                    "Jam Mulai": inputMulai + ":00", // Sesuaikan format waktu AppSheet (HH:MM:SS)
-                    "Jam Selesai": inputSelesai + ":00"
+                    "Nama": name 
                 };
-                
+
                 // Gabungkan menjadi link sakti auto-fill
                 const autoFillUrl = `${baseUrl}?defaults=${encodeURIComponent(JSON.stringify(defaults))}#control=${encodeURIComponent(viewName)}`;
-                
+
                 // Tempelkan link ke tombol kamera
                 btnBukaKamera.href = autoFillUrl;
                 panelEvidence.classList.remove('hidden');
