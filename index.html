@@ -188,14 +188,20 @@
             const today = new Date();
             const date = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
 
+            // Ambil data inputan saat ini
+            const inputShift = document.getElementById('shiftKerja').value;
+            const inputMulai = document.getElementById('jamMulai').value;
+            const inputSelesai = document.getElementById('jamSelesai').value;
+            const inputDetail = document.getElementById('jobDetail').value;
+
             const dataKirim = {
                 date,
                 name,
                 division,
-                shift: document.getElementById('shiftKerja').value,
-                jamMulai: document.getElementById('jamMulai').value,
-                jamSelesai: document.getElementById('jamSelesai').value,
-                detail: document.getElementById('jobDetail').value
+                shift: inputShift,
+                jamMulai: inputMulai,
+                jamSelesai: inputSelesai,
+                detail: inputDetail
             };
 
             fetch(WEB_APP_URL, {
@@ -209,7 +215,7 @@
                 const jamSekarang = new Date().toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'});
                 localStorage.setItem('gaptek_terakhir_kirim', jamSekarang);
                 
-                // BERSIHKAN FORM
+                // BERSIHKAN FORM UTAMA
                 document.getElementById('jobDetail').value = '';
                 document.getElementById('jamMulai').value = '';
                 document.getElementById('jamSelesai').value = '';
@@ -217,8 +223,25 @@
                 
                 alert("Laporan tertulis Berhasil Dikirim! Sekarang silakan klik tombol biru di bawah untuk ambil foto.");
                 
-                // AKTIFKAN PANEL FOTO APPSHEET
-                btnBukaKamera.href = APPSHEET_FORM_URL;
+                // ====== TRIK PINTAR: PASANG AUTO-FILL UNTUK APPSHEET ======
+                // Kita kirim data yang tadi diinput ke dalam link AppSheet agar terisi otomatis
+                const baseUrl = "https://www.appsheet.com/start/af05701f-3978-4c0c-a049-892bf3f9425a";
+                const viewName = "Database Laporan Kerja_Form";
+                
+                // Susun default values dalam format JSON
+                const defaults = {
+                    "Nama Karyawan": name,
+                    "Divisi": division,
+                    "Shift": inputShift,
+                    "Jam Mulai": inputMulai + ":00", // Sesuaikan format waktu AppSheet (HH:MM:SS)
+                    "Jam Selesai": inputSelesai + ":00"
+                };
+                
+                // Gabungkan menjadi link sakti auto-fill
+                const autoFillUrl = `${baseUrl}?defaults=${encodeURIComponent(JSON.stringify(defaults))}#control=${encodeURIComponent(viewName)}`;
+                
+                // Tempelkan link ke tombol kamera
+                btnBukaKamera.href = autoFillUrl;
                 panelEvidence.classList.remove('hidden');
                 
                 muatStatusTerakhir();
@@ -233,8 +256,6 @@
                 submitBtn.innerHTML = "<span>📤 KIRIM LAPORAN KERJA</span>";
             });
         });
-
-        cekProfil();
     </script>
 </body>
 </html>
