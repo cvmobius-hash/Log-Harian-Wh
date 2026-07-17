@@ -118,140 +118,136 @@
 
     <!-- LOGIKA UTAMA COMBINE SYSTEM -->
     <script>
-        // 1. MASUKKAN URL GOOGLE APPS SCRIPT ANDA DI SINI (DARI GOOGLE SHEETS)
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwXqyDRdvfovbbwOzD68FAriOQ715_U5TwyAkY1H3Z5NJYru27L1sz5G7j7mqaIAial/exec";
+        // 1. MASUKKAN URL GOOGLE APPS SCRIPT BARU ANDA DI SINI
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwTrsZaqa2VnC90QgAjWL4dwtjSIeSnFYOBV8q3AXRYBrcGRGuDH5Bz8x6q95TaXlkc/exec";
 
-        // 2. MASUKKAN LINK APPSHEET FORMULIR BROWSER LINK ANDA DI SINI
-        // Contoh format: https://www.appsheet.com/start/xxx-xxx-xxx&view=Laporan_Harian_Form
-        // GANTI BARIS KE-98 DI KODINGAN VS CODE ANDA DENGAN INI:
-        const APPSHEET_FORM_URL = "https://www.appsheet.com/start/af05701f-3978-4c0c-a049-892bf3f9425a#control=Bukti_Foto_Form";
+// 2. MASUKKAN LINK UTAMA APPSHEET ANDA (TANPA EMBEL-EMBEL #)
+const BASE_APPSHEET_URL = "https://www.appsheet.com/start/af05701f-3978-4c0c-a049-892bf3f9425a";
+const VIEW_FORM_NAME = "Bukti_Foto_Form"; // Nama View Form khusus Kamera di AppSheet Anda
 
-        const sectionProfil = document.getElementById('sectionProfil');
-        const profilTerkunci = document.getElementById('profilTerkunci');
-        const txtNamaDivisi = document.getElementById('txtNamaDivisi');
-        const submitBtn = document.getElementById('submitBtn');
-        const statusBox = document.getElementById('statusBox');
-        const statusText = document.getElementById('statusText');
-        const panelEvidence = document.getElementById('panelEvidence');
-        const btnBukaKamera = document.getElementById('btnBukaKamera');
+const sectionProfil = document.getElementById('sectionProfil');
+const profilTerkunci = document.getElementById('profilTerkunci');
+const txtNamaDivisi = document.getElementById('txtNamaDivisi');
+const submitBtn = document.getElementById('submitBtn');
+const statusBox = document.getElementById('statusBox');
+const statusText = document.getElementById('statusText');
+const panelEvidence = document.getElementById('panelEvidence');
+const btnBukaKamera = document.getElementById('btnBukaKamera');
 
-        function cekProfil() {
-            const savedName = localStorage.getItem('gaptek_nama');
-            const savedDiv = localStorage.getItem('gaptek_divisi');
-            if (savedName && savedDiv) {
-                sectionProfil.classList.add('hidden');
-                profilTerkunci.classList.remove('hidden');
-                txtNamaDivisi.innerText = `${savedName} (${savedDiv})`;
-            } else {
-                sectionProfil.classList.remove('hidden');
-                profilTerkunci.classList.add('hidden');
-            }
-            muatStatusTerakhir();
+function cekProfil() {
+    const savedName = localStorage.getItem('gaptek_nama');
+    const savedDiv = localStorage.getItem('gaptek_divisi');
+    if (savedName && savedDiv) {
+        sectionProfil.classList.add('hidden');
+        profilTerkunci.classList.remove('hidden');
+        txtNamaDivisi.innerText = `${savedName} (${savedDiv})`;
+    } else {
+        sectionProfil.classList.remove('hidden');
+        profilTerkunci.classList.add('hidden');
+    }
+    muatStatusTerakhir();
+}
+
+function simpanProfil() {
+    const name = document.getElementById('employeeName').value.trim();
+    const div = document.getElementById('division').value.trim();
+    if (!name || !div) { alert("Tolong tulis Nama dan Bagian Kerja Anda."); return; }
+    localStorage.setItem('gaptek_nama', name);
+    localStorage.setItem('gaptek_divisi', div);
+    cekProfil();
+}
+
+function ubahProfil() {
+    if (confirm("Ingin mengganti data nama Anda?")) {
+        localStorage.removeItem('gaptek_nama');
+        localStorage.removeItem('gaptek_divisi');
+        cekProfil();
+    }
+}
+
+function muatStatusTerakhir() {
+    const terakhirKirim = localStorage.getItem('gaptek_terakhir_kirim');
+    if (terakhirKirim) {
+        statusBox.className = "p-3 rounded-xl bg-emerald-50 border border-emerald-300 text-center inline-block min-w-[200px]";
+        statusText.innerHTML = `🟢 <span class="text-emerald-800 font-bold">LAPORAN DIKIRIM</span><br><span class="text-[10px] text-slate-400">Jam: ${terakhirKirim}</span>`;
+    }
+}
+
+document.getElementById('gaptekForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name = localStorage.getItem('gaptek_nama');
+    const division = localStorage.getItem('gaptek_divisi');
+
+    if (!name || !division) { alert("Harap isi nama Anda di bagian paling atas dahulu."); return; }
+
+    submitBtn.disabled = true;
+    submitBtn.className = "w-full bg-slate-300 text-slate-500 font-bold py-4 rounded-2xl text-lg flex flex-col items-center justify-center cursor-not-allowed";
+    submitBtn.innerHTML = "<span>⏳ SEDANG MENGIRIM DATA...</span>";
+
+    const today = new Date();
+    const date = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
+
+    const inputShift = document.getElementById('shiftKerja').value;
+    const inputMulai = document.getElementById('jamMulai').value;
+    const inputSelesai = document.getElementById('jamSelesai').value;
+    const inputDetail = document.getElementById('jobDetail').value;
+
+    const dataKirim = {
+        date,
+        name,
+        division,
+        shift: inputShift,
+        jamMulai: inputMulai,
+        jamSelesai: inputSelesai,
+        detail: inputDetail
+    };
+
+    // 🌟 PERBAIKAN CORS: Menggunakan 'text/plain' agar payload tidak hilang/kosong saat diterima Google Sheets
+    fetch(WEB_APP_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(dataKirim)
+    })
+    .then(res => res.json())
+    .then((responJson) => {
+        if(responJson.result === "error") {
+            alert("Sistem Google Sheets Eror: " + responJson.error);
+            return;
         }
 
-        function simpanProfil() {
-            const name = document.getElementById('employeeName').value.trim();
-            const div = document.getElementById('division').value.trim();
-            if (!name || !div) { alert("Tolong tulis Nama dan Bagian Kerja Anda."); return; }
-            localStorage.setItem('gaptek_nama', name);
-            localStorage.setItem('gaptek_divisi', div);
-            cekProfil();
-        }
+        const jamSekarang = new Date().toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'});
+        localStorage.setItem('gaptek_terakhir_kirim', jamSekarang);
+        
+        // BERSIHKAN FORM
+        document.getElementById('jobDetail').value = '';
+        document.getElementById('jamMulai').value = '';
+        document.getElementById('jamSelesai').value = '';
+        document.getElementById('shiftKerja').value = '';
+        
+        alert("Laporan tertulis Berhasil Dikirim! Sekarang silakan klik tombol biru di bawah untuk ambil foto.");
+        
+        // 🌟 PERBAIKAN LINK APPSHEET: Format tautan yang benar untuk langsung mengisi Form
+        const defaults = { "Nama": name };
+        const autoFillUrl = `${BASE_APPSHEET_URL}?defaults=${encodeURIComponent(JSON.stringify(defaults))}#control=${VIEW_FORM_NAME}`;
 
-        function ubahProfil() {
-            if (confirm("Ingin mengganti data nama Anda?")) {
-                localStorage.removeItem('gaptek_nama');
-                localStorage.removeItem('gaptek_divisi');
-                cekProfil();
-            }
-        }
+        btnBukaKamera.href = autoFillUrl;
+        panelEvidence.classList.remove('hidden');
+        
+        muatStatusTerakhir();
+    })
+    .catch(error => {
+        console.error(error);
+        alert("Gagal kirim. Pastikan HP terkoneksi internet atau periksa ulang Deployment URL Anda.");
+    })
+    .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4.5 rounded-2xl text-xl shadow-lg transition active:scale-98 flex flex-col items-center justify-center";
+        submitBtn.innerHTML = "<span>📤 KIRIM LAPORAN KERJA</span>";
+    });
+});
 
-        function muatStatusTerakhir() {
-            const terakhirKirim = localStorage.getItem('gaptek_terakhir_kirim');
-            if (terakhirKirim) {
-                statusBox.className = "p-3 rounded-xl bg-emerald-50 border border-emerald-300 text-center inline-block min-w-[200px]";
-                statusText.innerHTML = `🟢 <span class="text-emerald-800 font-bold">LAPORAN DIKIRIM</span><br><span class="text-[10px] text-slate-400">Jam: ${terakhirKirim}</span>`;
-            }
-        }
-
-        document.getElementById('gaptekForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const name = localStorage.getItem('gaptek_nama');
-            const division = localStorage.getItem('gaptek_divisi');
-
-            if (!name || !division) { alert("Harap isi nama Anda di bagian paling atas dahulu."); return; }
-
-            submitBtn.disabled = true;
-            submitBtn.className = "w-full bg-slate-300 text-slate-500 font-bold py-4 rounded-2xl text-lg flex flex-col items-center justify-center cursor-not-allowed";
-            submitBtn.innerHTML = "<span>⏳ SEDANG MENGIRIM DATA...</span>";
-
-            const today = new Date();
-            const date = `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`;
-
-            // Ambil data inputan saat ini
-            const inputShift = document.getElementById('shiftKerja').value;
-            const inputMulai = document.getElementById('jamMulai').value;
-            const inputSelesai = document.getElementById('jamSelesai').value;
-            const inputDetail = document.getElementById('jobDetail').value;
-
-            const dataKirim = {
-                date,
-                name,
-                division,
-                shift: inputShift,
-                jamMulai: inputMulai,
-                jamSelesai: inputSelesai,
-                detail: inputDetail
-            };
-
-            fetch(WEB_APP_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                cache: 'no-cache',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(dataKirim)
-            })
-            .then(() => {
-                const jamSekarang = new Date().toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'});
-                localStorage.setItem('gaptek_terakhir_kirim', jamSekarang);
-                
-                // BERSIHKAN FORM UTAMA
-                document.getElementById('jobDetail').value = '';
-                document.getElementById('jamMulai').value = '';
-                document.getElementById('jamSelesai').value = '';
-                document.getElementById('shiftKerja').value = '';
-                
-                alert("Laporan tertulis Berhasil Dikirim! Sekarang silakan klik tombol biru di bawah untuk ambil foto.");
-                
-               // ====== LINK KHUSUS FORM BUKTI FOTO APPSHEET ======
-                // Kita arahkan langsung ke View Form Bukti Foto yang bersih (hanya Nama & Kamera)
-                const baseUrl = "https://www.appsheet.com/start/af05701f-3978-4c0c-a049-892bf3f9425a";
-                const viewName = "Bukti_Foto_Form"; // Nama View Form khusus yang Anda buat di AppSheet
-
-                // Kirim data nama karyawan agar otomatis terpilih di form AppSheet
-                const defaults = {
-                    "Nama": name 
-                };
-
-                // Gabungkan menjadi link sakti auto-fill
-                const autoFillUrl = `${baseUrl}?defaults=${encodeURIComponent(JSON.stringify(defaults))}#control=${encodeURIComponent(viewName)}`;
-
-                // Tempelkan link ke tombol kamera
-                btnBukaKamera.href = autoFillUrl;
-                panelEvidence.classList.remove('hidden');
-                
-                muatStatusTerakhir();
-            })
-            .catch(error => {
-                console.error(error);
-                alert("Gagal kirim. Pastikan HP terkoneksi internet.");
-            })
-            .finally(() => {
-                submitBtn.disabled = false;
-                submitBtn.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4.5 rounded-2xl text-xl shadow-lg transition active:scale-98 flex flex-col items-center justify-center";
-                submitBtn.innerHTML = "<span>📤 KIRIM LAPORAN KERJA</span>";
-            });
-        });
+// Jalankan pengecekan profil saat halaman web pertama kali dibuka
+cekProfil();
     </script>
 </body>
 </html>
