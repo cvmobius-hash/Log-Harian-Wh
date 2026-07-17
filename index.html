@@ -224,15 +224,26 @@ document.getElementById('gaptekForm').addEventListener('submit', function(e) {
         document.getElementById('jamSelesai').value = '';
         document.getElementById('shiftKerja').value = '';
         
-        alert("Laporan tertulis Berhasil Dikirim! Sekarang silakan klik tombol biru di bawah untuk ambil foto.");
-        
-        // 🌟 PERBAIKAN LINK APPSHEET: Format tautan yang benar untuk langsung mengisi Form
-        const defaults = { "Nama": name };
-        const autoFillUrl = `${BASE_APPSHEET_URL}?defaults=${encodeURIComponent(JSON.stringify(defaults))}#control=${VIEW_FORM_NAME}`;
+        // ====== GANTI KODE DI DALAM BLOK .then() DENGAN INI ======
 
+        alert("Laporan tertulis Berhasil Dikirim! Sekarang silakan klik tombol biru di bawah untuk ambil foto.");
+
+        // 1. Tentukan nama kolom target di tabel AppSheet Anda (Cek di AppSheet, apakah namanya "Nama", "Nama Karyawan", atau "Nama_Karyawan")
+        // Ubah "Nama Karyawan" di bawah ini agar sesuai dengan nama kolom asli di AppSheet Anda!
+        const namaKolomDiAppSheet = "Nama Karyawan"; 
+
+        // 2. Susun struktur URL yang benar (Struktur #control wajib di depan parameter ?defaults)
+        const urlDenganForm = `${BASE_APPSHEET_URL}#control=${VIEW_FORM_NAME}`;
+        const dataPrefill = {};
+        dataPrefill[namaKolomDiAppSheet] = name; // Mengisi otomatis kolom Nama Karyawan dengan nama dari localStorage
+
+        // 3. Gabungkan menjadi full link prefill
+        const autoFillUrl = `${urlDenganForm}&defaults=${encodeURIComponent(JSON.stringify(dataPrefill))}`;
+
+        // 4. Pasang ke tombol kamera
         btnBukaKamera.href = autoFillUrl;
         panelEvidence.classList.remove('hidden');
-        
+
         muatStatusTerakhir();
     })
     .catch(error => {
